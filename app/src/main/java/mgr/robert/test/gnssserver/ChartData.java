@@ -57,6 +57,10 @@ public class ChartData {
         return maxY;
     }
 
+    public static <T> Builder<T> builder() {
+        return new Builder<>();
+    }
+
     private void compute() {
         double sumx = 0, sumy = 0;
         for (int i = 0; i < rowsNum; i++) {
