@@ -32,7 +32,7 @@ public class DataReader {
 
     private void fillData() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(dataPaths.get(0)))) {
-            String line = bufferedReader.readLine();
+            String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] strings = line.split(" +");
                 double x = Double.parseDouble(strings[2]);

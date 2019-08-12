@@ -35,7 +35,6 @@ public class SelectDataActivity extends AppCompatActivity {
                 && resultCode == Activity.RESULT_OK
                 && data != null) {
 
-
             ArrayList<String> dataPaths = new ArrayList<>(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
 
             Intent intent = new Intent(this, ChartActivity.class);
