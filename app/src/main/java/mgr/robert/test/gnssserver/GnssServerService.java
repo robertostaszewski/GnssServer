@@ -5,24 +5,25 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import java.io.IOException;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class GnssServerService extends IntentService {
+    private final ExecutorService pool = Executors.newFixedThreadPool(2);
+    private final StopReceiver receiver = new StopReceiver();
+
+    private NetworkManager networkManager;
     private int sourcePortNumber;
     private int dataPortNumber;
-    private int bufferSize;
-    boolean work = true;
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -35,9 +36,39 @@ public class GnssServerService extends IntentService {
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         sourcePortNumber = intent.getIntExtra("sourcePort", 8083);
         dataPortNumber = intent.getIntExtra("serverPort", 8084);
-        bufferSize = intent.getIntExtra("bufferSize", 1024);
+        int bufferSize = intent.getIntExtra("bufferSize", 1024);
+        networkManager = new NetworkManager(new ConcurrentSubscriberService(), bufferSize);
 
+        startNotification();
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+        try {
+            NetworkService producerNetwork = networkManager.getProducerNetwork(sourcePortNumber);
+            NetworkService consumerNetwork = networkManager.getConsumerNetwork(dataPortNumber);
+
+            pool.execute(consumerNetwork);
+            pool.submit(producerNetwork).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        pool.shutdown();
+        networkManager.close();
+        unregisterReceiver(receiver);
+        pool.shutdownNow();
+        super.onDestroy();
+    }
+
+    private void startNotification() {
         Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
@@ -47,64 +78,33 @@ public class GnssServerService extends IntentService {
             NotificationChannel chan = new NotificationChannel(channelId,
                     channelName, NotificationManager.IMPORTANCE_DEFAULT);
             chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-            NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            service.createNotificationChannel(chan);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(chan);
         }
+
+        Intent stopIntent = new Intent(StopReceiver.ACTION_STOP);
+        PendingIntent stop = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
 
         Notification notification =
                 new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.drawable.icon_file_pdf)
                         .setContentTitle("title")
                         .setContentText("text")
                         .setContentIntent(pendingIntent)
                         .setTicker("ticker")
+                        .addAction(R.drawable.gallery_album_overlay, "Stop", stop)
                         .build();
 
         startForeground(1, notification);
-
-        return super.onStartCommand(intent, flags, startId);
     }
 
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        while (work) {
-            try {
-                server();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+    private static class StopReceiver extends BroadcastReceiver {
 
-    @Override
-    public void onDestroy() {
-        work = false;
-        super.onDestroy();
-    }
+        public static final String ACTION_STOP = "stop";
 
-    public void server() throws Exception {
-        try (ServerConn serverConn = new ServerConn(sourcePortNumber);
-             ServerConn clientConn = new ServerConn(dataPortNumber)) {
-
-            boolean isInitialized = false;
-            while (!isInitialized) {
-                String data = new Scanner(serverConn).useDelimiter("\\r\\n\\r\\n").next();
-                Matcher get = Pattern.compile("^SOURCE").matcher(data);
-                System.out.println(data);
-                byte[] response = ("ICY 200 OK\r\n\r\n").getBytes("UTF-8");
-                serverConn.write(response);
-                isInitialized = true;
-            }
-
-            int len;
-            byte[] b;
-            while (work) {
-                b = new byte[bufferSize];
-                if ((len = serverConn.read(b)) != -1) {
-                    clientConn.write(b, 0, len);
-                } else {
-                    throw new IOException("cannot read more");
-                }
-            }
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            context.stopService(new Intent(context, GnssServerService.class));
         }
     }
 }

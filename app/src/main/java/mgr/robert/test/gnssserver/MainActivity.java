@@ -1,6 +1,7 @@
 package mgr.robert.test.gnssserver;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -9,8 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import java.util.ArrayList;
+
+import droidninja.filepicker.FilePickerBuilder;
+import droidninja.filepicker.FilePickerConst;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            Log.v("PERM","Permission is not granted");
+            Log.v("PERM", "Permission is not granted");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
         }
         Button start = findViewById(R.id.Start);
@@ -52,11 +59,27 @@ public class MainActivity extends AppCompatActivity {
         selectDataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SelectDataActivity.class);
-                startActivity(intent);
+                FilePickerBuilder.getInstance()
+                        .setMaxCount(1)
+                        .setActivityTheme(R.style.LibAppTheme)
+                        .addFileSupport("LOG", new String[]{".log"}, R.drawable.icon_file_unknown)
+                        .pickFile(MainActivity.this);
             }
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == FilePickerConst.REQUEST_CODE_DOC
+                && resultCode == Activity.RESULT_OK
+                && data != null) {
+
+            ArrayList<String> dataPaths = new ArrayList<>(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
+
+            Intent intent = new Intent(this, ChartActivity.class);
+            intent.putStringArrayListExtra("dataPaths", dataPaths);
+            startActivity(intent);
+        }
+    }
 
 }
