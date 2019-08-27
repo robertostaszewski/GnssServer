@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".android.activities.MainActivity">
 
     <TextView
         android:id="@+id/textView2"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Source Port"
-        android:inputType="numberSigned"
+        android:inputType="number"
         android:text="8083"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Server Port"
-        android:inputType="numberSigned"
+        android:inputType="number"
         android:text="8084"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Buffer Size"
-        android:inputType="numberSigned"
+        android:inputType="number"
         android:text="1024"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
