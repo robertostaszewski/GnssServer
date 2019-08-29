@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -14,7 +15,6 @@ import androidx.core.app.NotificationCompat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import mgr.robert.test.gnssserver.android.activities.StopReceiver;
 import mgr.robert.test.gnssserver.network.ConcurrentSubscriberService;
 import mgr.robert.test.gnssserver.network.NetworkManager;
 import mgr.robert.test.gnssserver.network.NetworkService;
@@ -53,7 +53,7 @@ public class GnssServerService extends IntentService {
             pool.execute(consumerNetwork);
             pool.submit(producerNetwork).get();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("GSS", "exception in onHandleIntent", e);
         }
     }
 
@@ -71,9 +71,6 @@ public class GnssServerService extends IntentService {
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        Intent stopIntent = new Intent(StopReceiver.ACTION_STOP);
-        PendingIntent stop = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
-
         String channelId = "channelId";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelName = "channelName";
@@ -85,12 +82,11 @@ public class GnssServerService extends IntentService {
         }
 
         return new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.icon_file_pdf)
+                        .setSmallIcon(R.drawable.satelite)
                         .setContentTitle("title")
                         .setContentText("text")
                         .setContentIntent(pendingIntent)
                         .setTicker("ticker")
-                        .addAction(R.drawable.gallery_album_overlay, "Stop", stop)
                         .build();
     }
 

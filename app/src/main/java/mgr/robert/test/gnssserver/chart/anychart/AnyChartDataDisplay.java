@@ -35,8 +35,7 @@ public class AnyChartDataDisplay implements ChartDataDisplay {
                 .maximum(rounded(chartData.getMaxVisiblePoint().getX()));
 
         scatter.yAxis(0).title("Latitude");
-        scatter.xAxis(0)
-                .title("Longitude")
+        scatter.xAxis(0).title("Longitude")
                 .drawFirstLabel(false)
                 .drawLastLabel(false);
 

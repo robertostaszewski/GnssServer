@@ -26,8 +26,8 @@ public class ChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chart_common);
 
         Intent intent = getIntent();
-        ArrayList<String> dataPaths = intent.getStringArrayListExtra("dataPaths");
-        ChartDataCreator chartDataCreator = new ChartDataCreator(new FileDataReader(dataPaths));
+        String dataPath = intent.getStringExtra("dataPath");
+        ChartDataCreator chartDataCreator = new ChartDataCreator(new FileDataReader(dataPath));
 
         ChartData chartData = chartDataCreator.create();
 

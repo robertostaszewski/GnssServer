@@ -1,5 +1,6 @@
 package mgr.robert.test.gnssserver.network;
 
+import android.util.Log;
 import android.util.SparseArray;
 
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class NetworkManager {
             createdServices.get(port).close();
             createdServices.remove(port);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("NM", "exception in closeNetworkAtPort: " + port, e);
         }
     }
 }

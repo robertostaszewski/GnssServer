@@ -43,8 +43,8 @@ public class ChartDataCreator {
             precY += Math.pow(p.getY() - avgY, 2);
         }
 
-        precX = precX / points.size();
-        precY = precY / points.size();
+        precX = precX / (points.size() - 1);
+        precY = precY / (points.size() - 1);
 
         double drms = Math.pow(precX + precY, 0.5);
         double drms2 = 2 * drms;

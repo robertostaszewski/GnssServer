@@ -1,5 +1,7 @@
 package mgr.robert.test.gnssserver.network;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.SocketException;
@@ -24,9 +26,10 @@ public class NetworkService implements Runnable {
                         handlerFactory.getHandler(serverSocket.accept());
                 handler.handle();
             }catch (SocketException e) {
+                Log.e("NS", "exception in run. Loop is broken", e);
                 break;
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("NS", "exception in run", e);
             }
         }
     }
