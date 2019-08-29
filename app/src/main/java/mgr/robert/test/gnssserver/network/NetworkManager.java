@@ -5,6 +5,7 @@ import android.util.SparseArray;
 
 import java.io.IOException;
 
+import mgr.robert.test.gnssserver.network.handlers.HandlerFactory;
 import mgr.robert.test.gnssserver.network.handlers.ProducerHandlerFactory;
 import mgr.robert.test.gnssserver.network.handlers.SubscribedConsumerHandlerFactory;
 
@@ -18,23 +19,18 @@ public class NetworkManager {
     }
 
     public NetworkService getProducerNetwork(int port) throws IOException {
-        if (isBusy(port)) {
-            closeNetworkAtPort(port);
-        }
-        ProducerHandlerFactory factory =
-                new ProducerHandlerFactory(subscriberService, bufferSize);
-        NetworkService networkService = new NetworkService(port, factory);
-        createdServices.put(port, networkService);
-        return networkService;
+        return getNetworkService(port, new ProducerHandlerFactory(subscriberService, bufferSize));
     }
 
     public NetworkService getConsumerNetwork(int port) throws IOException {
+        return getNetworkService(port, new SubscribedConsumerHandlerFactory(subscriberService, bufferSize));
+    }
+
+    private NetworkService getNetworkService(int port, HandlerFactory handlerFactory) throws IOException {
         if (isBusy(port)) {
             closeNetworkAtPort(port);
         }
-        SubscribedConsumerHandlerFactory factory =
-                new SubscribedConsumerHandlerFactory(subscriberService, bufferSize);
-        NetworkService networkService = new NetworkService(port, factory);
+        NetworkService networkService = new NetworkService(port, handlerFactory);
         createdServices.put(port, networkService);
         return networkService;
     }
