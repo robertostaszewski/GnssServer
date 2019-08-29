@@ -34,19 +34,18 @@ public class AnyChartDataDisplay implements ChartDataDisplay {
                 .minimum(rounded(chartData.getMinVisiblePoint().getX()))
                 .maximum(rounded(chartData.getMaxVisiblePoint().getX()));
 
-        scatter.yAxis(0).title("Latitude");
-        scatter.xAxis(0)
-                .title("Longitude")
+        scatter.yAxis(0).title("Longitude");
+        scatter.xAxis(0).title("Latitude")
                 .drawFirstLabel(false)
                 .drawLastLabel(false);
 
-        Marker marker = scatter.marker(PointConverter.toDataEntry(chartData.getMarkerData()));
+        Marker marker = scatter.marker(PointConverter.toDataEntry(chartData.getPoints()));
         marker.type(MarkerType.CIRCLE).size(2d);
 
-        Line scatterSeriesLine = scatter.line(PointConverter.toDataEntry(chartData.getDrmsData()));
+        Line scatterSeriesLine = scatter.line(PointConverter.toDataEntry(chartData.getDrmsPoints()));
         scatterSeriesLine.stroke("black", 1d, null, (String) null, (String) null);
 
-        Line scatterSeriesLine1 = scatter.line(PointConverter.toDataEntry(chartData.getDrms2Data()));
+        Line scatterSeriesLine1 = scatter.line(PointConverter.toDataEntry(chartData.getDrms2Points()));
         scatterSeriesLine1.stroke("red", 1d, null, (String) null, (String) null);
 
         anyChartView.setChart(scatter);

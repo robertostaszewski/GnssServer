@@ -14,7 +14,6 @@ import androidx.core.app.NotificationCompat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import mgr.robert.test.gnssserver.android.activities.StopReceiver;
 import mgr.robert.test.gnssserver.network.ConcurrentSubscriberService;
 import mgr.robert.test.gnssserver.network.NetworkManager;
 import mgr.robert.test.gnssserver.network.NetworkService;
@@ -71,9 +70,6 @@ public class GnssServerService extends IntentService {
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        Intent stopIntent = new Intent(StopReceiver.ACTION_STOP);
-        PendingIntent stop = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
-
         String channelId = "channelId";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelName = "channelName";
@@ -90,7 +86,6 @@ public class GnssServerService extends IntentService {
                         .setContentText("text")
                         .setContentIntent(pendingIntent)
                         .setTicker("ticker")
-                        .addAction(R.drawable.gallery_album_overlay, "Stop", stop)
                         .build();
     }
 

@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.anychart.AnyChartView;
 
-import java.util.ArrayList;
-
 import mgr.robert.test.gnssserver.chart.anychart.AnyChartDataDisplay;
 import mgr.robert.test.gnssserver.chart.ChartData;
 import mgr.robert.test.gnssserver.chart.ChartDataCreator;
@@ -26,8 +24,8 @@ public class ChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chart_common);
 
         Intent intent = getIntent();
-        ArrayList<String> dataPaths = intent.getStringArrayListExtra("dataPaths");
-        ChartDataCreator chartDataCreator = new ChartDataCreator(new FileDataReader(dataPaths));
+        String dataPath = intent.getStringExtra("dataPath");
+        ChartDataCreator chartDataCreator = new ChartDataCreator(new FileDataReader(dataPath));
 
         ChartData chartData = chartDataCreator.create();
 

@@ -11,25 +11,24 @@ import mgr.robert.test.gnssserver.chart.Point;
 import mgr.robert.test.gnssserver.chart.datasource.DataReader;
 
 public class FileDataReader implements DataReader {
-    private List<String> dataPaths;
+    private final String dataPath;
 
-    public FileDataReader(List<String> dataPaths) {
-        this.dataPaths = dataPaths;
+    public FileDataReader(String dataPath) {
+        this.dataPath = dataPath;
     }
 
     @Override
     public List<Point> read() {
         List<Point> points = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(dataPaths.get(0)))) {
-            String line = bufferedReader.readLine();
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(dataPath))) {
+            bufferedReader.readLine();
+            String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] strings = line.split(" +");
                 double y = Double.parseDouble(strings[2]);
                 double x = Double.parseDouble(strings[3]);
                 points.add(new Point(x, y));
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

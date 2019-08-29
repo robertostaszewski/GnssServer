@@ -3,40 +3,40 @@ package mgr.robert.test.gnssserver.chart;
 import java.util.List;
 
 public class ChartData {
-    private final List<Point> drmsData;
-    private final List<Point> drms2Data;
-    private final List<Point> markerData;
+    private final List<Point> drmsPoints;
+    private final List<Point> drms2Points;
+    private final List<Point> points;
     private final Point minPoint;
     private final Point maxPoint;
     private final Point minVisiblePoint;
     private final Point maxVisiblePoint;
 
-    public ChartData(List<Point> markerData,
-                     List<Point> drmsData,
-                     List<Point> drms2Data,
+    public ChartData(List<Point> points,
+                     List<Point> drmsPoints,
+                     List<Point> drms2Points,
                      Point minPoint,
                      Point maxPoint,
                      Point minVisiblePoint,
                      Point maxVisiblePoint) {
-        this.drmsData = drmsData;
-        this.drms2Data = drms2Data;
-        this.markerData = markerData;
+        this.drmsPoints = drmsPoints;
+        this.drms2Points = drms2Points;
+        this.points = points;
         this.minPoint = minPoint;
         this.maxPoint = maxPoint;
         this.minVisiblePoint = minVisiblePoint;
         this.maxVisiblePoint = maxVisiblePoint;
     }
 
-    public List<Point> getDrmsData() {
-        return drmsData;
+    public List<Point> getDrmsPoints() {
+        return drmsPoints;
     }
 
-    public List<Point> getDrms2Data() {
-        return drms2Data;
+    public List<Point> getDrms2Points() {
+        return drms2Points;
     }
 
-    public List<Point> getMarkerData() {
-        return markerData;
+    public List<Point> getPoints() {
+        return points;
     }
 
     public Point getMinPoint() {

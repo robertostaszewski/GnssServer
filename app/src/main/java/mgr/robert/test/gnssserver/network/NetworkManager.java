@@ -8,8 +8,8 @@ import mgr.robert.test.gnssserver.network.handlers.ProducerHandlerFactory;
 import mgr.robert.test.gnssserver.network.handlers.SubscribedConsumerHandlerFactory;
 
 public class NetworkManager {
+    private static final int BUFFER_SIZE = 1024;
     private final SubscriberService subscriberService;
-    private final int bufferSize = 1024;
     private final SparseArray<NetworkService> createdServices = new SparseArray<>();
 
     public NetworkManager(SubscriberService subscriberService) {
@@ -21,7 +21,7 @@ public class NetworkManager {
             closeNetworkAtPort(port);
         }
         ProducerHandlerFactory factory =
-                new ProducerHandlerFactory(subscriberService, bufferSize);
+                new ProducerHandlerFactory(subscriberService, BUFFER_SIZE);
         NetworkService networkService = new NetworkService(port, factory);
         createdServices.put(port, networkService);
         return networkService;
@@ -32,7 +32,7 @@ public class NetworkManager {
             closeNetworkAtPort(port);
         }
         SubscribedConsumerHandlerFactory factory =
-                new SubscribedConsumerHandlerFactory(subscriberService, bufferSize);
+                new SubscribedConsumerHandlerFactory(subscriberService, BUFFER_SIZE);
         NetworkService networkService = new NetworkService(port, factory);
         createdServices.put(port, networkService);
         return networkService;

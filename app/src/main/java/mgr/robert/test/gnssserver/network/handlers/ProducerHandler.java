@@ -14,6 +14,10 @@ import mgr.robert.test.gnssserver.network.Packet;
 import mgr.robert.test.gnssserver.network.publisher.PacketPublisher;
 
 public class ProducerHandler implements Handler {
+    private static final String DELIMITER = "\\r\\n\\r\\n";
+    private static final String SOURCE = "SOURCE";
+    private static final byte[] ICY_200_OK = "ICY 200 OK\r\n\r\n".getBytes(StandardCharsets.UTF_8);
+
     private final Socket socket;
     private final PacketPublisher packetPublisher;
     private final int bufferSize;
@@ -46,10 +50,9 @@ public class ProducerHandler implements Handler {
 
     private boolean init(InputStream inputStream, OutputStream outputStream) throws IOException {
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-        String data = new Scanner(inputStreamReader).useDelimiter("\\r\\n\\r\\n").next();
-        if(data.contains("SOURCE")) {
-            byte[] response = "ICY 200 OK\r\n\r\n".getBytes(StandardCharsets.UTF_8);
-            outputStream.write(response);
+        String data = new Scanner(inputStreamReader).useDelimiter(DELIMITER).next();
+        if(data.contains(SOURCE)) {
+            outputStream.write(ICY_200_OK);
             outputStream.flush();
             return true;
         } else {
