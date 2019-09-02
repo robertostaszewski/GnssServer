@@ -1,22 +1,23 @@
 package mgr.robert.test.gnssserver.network.handlers;
 
 import java.net.Socket;
+import java.util.List;
 
 import mgr.robert.test.gnssserver.network.publisher.CopyPacketOnSendPublisher;
 import mgr.robert.test.gnssserver.network.SubscriberService;
+import mgr.robert.test.gnssserver.network.subscriber.PacketSubscriber;
 
 public class ProducerHandlerFactory implements HandlerFactory {
     private final SubscriberService subscriberService;
-    private final int bufferSize;
 
-    public ProducerHandlerFactory(SubscriberService subscriberService, int bufferSize) {
+    public ProducerHandlerFactory(SubscriberService subscriberService) {
         this.subscriberService = subscriberService;
-        this.bufferSize = bufferSize;
     }
 
     @Override
     public Handler getHandler(Socket socket) {
-        return new ProducerHandler(socket,
-                new CopyPacketOnSendPublisher(subscriberService.getSubscribers()), bufferSize);
+        List<PacketSubscriber> subscribers = subscriberService.getSubscribers();
+        CopyPacketOnSendPublisher packetPublisher = new CopyPacketOnSendPublisher(subscribers);
+        return new ProducerHandler(socket, packetPublisher);
     }
 }

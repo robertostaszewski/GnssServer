@@ -10,7 +10,6 @@ import mgr.robert.test.gnssserver.network.handlers.ProducerHandlerFactory;
 import mgr.robert.test.gnssserver.network.handlers.SubscribedConsumerHandlerFactory;
 
 public class NetworkManager {
-    private static final int BUFFER_SIZE = 1024;
     private final SubscriberService subscriberService;
     private final SparseArray<NetworkService> createdServices = new SparseArray<>();
 
@@ -19,11 +18,11 @@ public class NetworkManager {
     }
 
     public NetworkService getProducerNetwork(int port) throws IOException {
-        return getNetworkService(port, new ProducerHandlerFactory(subscriberService, bufferSize));
+        return getNetworkService(port, new ProducerHandlerFactory(subscriberService));
     }
 
     public NetworkService getConsumerNetwork(int port) throws IOException {
-        return getNetworkService(port, new SubscribedConsumerHandlerFactory(subscriberService, bufferSize));
+        return getNetworkService(port, new SubscribedConsumerHandlerFactory(subscriberService));
     }
 
     private NetworkService getNetworkService(int port, HandlerFactory handlerFactory) throws IOException {

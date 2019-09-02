@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import java.util.List;
+
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
 import mgr.robert.test.gnssserver.R;
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 && resultCode == Activity.RESULT_OK
                 && data != null) {
 
-            String dataPath = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS).get(0);
+            List<String> dataPaths = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS);
 
             Intent intent = new Intent(this, ChartActivity.class);
             intent.putExtra("dataPath", dataPaths.get(0));
