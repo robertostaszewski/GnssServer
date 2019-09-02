@@ -22,7 +22,7 @@ public class SubscribedConsumerHandlerFactory implements HandlerFactory {
     public Handler getHandler(Socket socket) {
         LinkedBlockingQueue<Packet> packets = new LinkedBlockingQueue<>();
         PacketSubscriber packetSubscriber = new QueuePacketSubscriber(packets);
-        return new AutoRegisterOnHandle(
-                new ConsumerHandler(socket, packets, bufferSize), packetSubscriber, subscriberService);
+        ConsumerHandler consumerHandler = new ConsumerHandler(socket, packets, bufferSize);
+        return new AutoRegisterOnHandle(consumerHandler, packetSubscriber, subscriberService);
     }
 }

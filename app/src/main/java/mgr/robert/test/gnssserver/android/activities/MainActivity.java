@@ -15,7 +15,7 @@ import androidx.core.app.ActivityCompat;
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
 import mgr.robert.test.gnssserver.R;
-import mgr.robert.test.gnssserver.android.services.GnssServerService;
+import mgr.robert.test.gnssserver.android.services.GnssServerRunner;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -43,18 +43,16 @@ public class MainActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, GnssServerService.class);
-                intent.putExtra("producerPort", Integer.parseInt(sourcePort.getText().toString()));
-                intent.putExtra("consumerPort", Integer.parseInt(serverPort.getText().toString()));
-                gnssServerRunner.startServer(MainActivity.this, intent);
+                gnssServerRunner.startServer(MainActivity.this,
+                        Integer.parseInt(sourcePort.getText().toString()),
+                        Integer.parseInt(serverPort.getText().toString()));
             }
         });
 
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, GnssServerService.class);
-                gnssServerRunner.stopServer(MainActivity.this, intent);
+                gnssServerRunner.stopServer(MainActivity.this);
             }
         });
 
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             String dataPath = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS).get(0);
 
             Intent intent = new Intent(this, ChartActivity.class);
-            intent.putExtra("dataPath", dataPath);
+            intent.putExtra("dataPath", dataPaths.get(0));
             startActivity(intent);
         }
     }

@@ -1,14 +1,14 @@
 package mgr.robert.test.gnssserver.chart.datasource;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import mgr.robert.test.gnssserver.chart.Point;
-import mgr.robert.test.gnssserver.chart.datasource.DataReader;
 
 public class FileDataReader implements DataReader {
     private final String dataPath;
@@ -30,7 +30,7 @@ public class FileDataReader implements DataReader {
                 points.add(new Point(x, y));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("FDR", "exception in read", e);
         }
         return points;
     }

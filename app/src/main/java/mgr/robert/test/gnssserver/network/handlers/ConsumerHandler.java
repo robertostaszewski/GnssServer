@@ -1,5 +1,7 @@
 package mgr.robert.test.gnssserver.network.handlers;
 
+import android.util.Log;
+
 import java.io.BufferedOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -29,7 +31,7 @@ public class ConsumerHandler implements Handler {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("CH", "exception in handle", e);
         }
     }
 }

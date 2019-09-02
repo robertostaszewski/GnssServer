@@ -1,5 +1,7 @@
 package mgr.robert.test.gnssserver.network.handlers;
 
+import android.util.Log;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -30,8 +32,8 @@ public class ProducerHandler implements Handler {
 
     @Override
     public void handle() {
-        try (OutputStream outputStream = new BufferedOutputStream(socket.getOutputStream());
-             InputStream inputStream = new BufferedInputStream(socket.getInputStream())) {
+        try (OutputStream outputStream = new BufferedOutputStream(socket.getOutputStream(), bufferSize);
+             InputStream inputStream = new BufferedInputStream(socket.getInputStream(), bufferSize)) {
             boolean isInitialised = init(inputStream, outputStream);
             int len;
             byte[] b;
@@ -44,7 +46,7 @@ public class ProducerHandler implements Handler {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("PH", "exception in handle", e);
         }
     }
 
