@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                         .setMaxCount(1)
                         .setActivityTheme(R.style.LibAppTheme)
                         .enableDocSupport(false)
-                        .addFileSupport("LOG", new String[]{".log"}, R.drawable.icon_file_unknown)
+                        .addFileSupport("POS", new String[]{".pos"}, R.drawable.icon_file_unknown)
                         .pickFile(MainActivity.this);
             }
         });

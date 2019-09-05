@@ -33,4 +33,14 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="368dp" />
 
+    <TextView
+        android:id="@+id/promien"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="180dp"
+        android:layout_marginTop="676dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -63,6 +63,6 @@ public class ChartDataCreator {
 
         return new ChartData(points, drmsPoints, drms2Points,
                 new Point(minX, minY), new Point(maxX, maxY),
-                new Point(minVisibleX, minVisibleY), new Point(maxVisibleX, maxVisibleY));
+                new Point(minVisibleX, minVisibleY), new Point(maxVisibleX, maxVisibleY), drms);
     }
 }

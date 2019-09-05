@@ -1,5 +1,8 @@
 package mgr.robert.test.gnssserver.chart.anychart;
 
+import android.app.Activity;
+import android.widget.TextView;
+
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.charts.Scatter;
@@ -9,16 +12,17 @@ import com.anychart.enums.MarkerType;
 
 import java.math.BigDecimal;
 
+import mgr.robert.test.gnssserver.R;
 import mgr.robert.test.gnssserver.chart.ChartData;
 import mgr.robert.test.gnssserver.chart.ChartDataDisplay;
 
 public class AnyChartDataDisplay implements ChartDataDisplay {
     private final ChartData chartData;
-    private final AnyChartView anyChartView;
+    private final Activity activity;
 
-    public AnyChartDataDisplay(ChartData chartData, AnyChartView anyChartView) {
+    public AnyChartDataDisplay(ChartData chartData, Activity activity) {
         this.chartData = chartData;
-        this.anyChartView = anyChartView;
+        this.activity = activity;
     }
 
     @Override
@@ -48,15 +52,20 @@ public class AnyChartDataDisplay implements ChartDataDisplay {
         Line scatterSeriesLine1 = scatter.line(PointConverter.toDataEntry(chartData.getDrms2Points()));
         scatterSeriesLine1.stroke("red", 1d, null, (String) null, (String) null);
 
+        AnyChartView anyChartView = activity.findViewById(R.id.any_chart_view);
         anyChartView.setChart(scatter);
+
+        TextView textView = activity.findViewById(R.id.promien);
+        textView.setText(String.valueOf(chartData.getRadius()));
     }
 
     @Override
     public void clear() {
+        AnyChartView anyChartView = activity.findViewById(R.id.any_chart_view);
         anyChartView.clear();
     }
 
     private static BigDecimal rounded(double value) {
-        return new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        return new BigDecimal(value).setScale(10, BigDecimal.ROUND_HALF_EVEN);
     }
 }

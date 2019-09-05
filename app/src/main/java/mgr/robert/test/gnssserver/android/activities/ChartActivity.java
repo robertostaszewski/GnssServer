@@ -32,7 +32,7 @@ public class ChartActivity extends AppCompatActivity {
         AnyChartView anyChartView = findViewById(R.id.any_chart_view);
         anyChartView.setProgressBar(findViewById(R.id.progress_bar));
 
-        chartDataDisplay = new AnyChartDataDisplay(chartData, anyChartView);
+        chartDataDisplay = new AnyChartDataDisplay(chartData, this);
         chartDataDisplay.display();
     }
 

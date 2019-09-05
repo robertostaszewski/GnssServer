@@ -83,8 +83,8 @@ public class GnssServerService extends IntentService {
 
         return new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.satelite)
-                        .setContentTitle("title")
-                        .setContentText("text")
+                        .setContentTitle("Gnss Server")
+                        .setContentText("Tap to close")
                         .setContentIntent(pendingIntent)
                         .setTicker("ticker")
                         .build();
