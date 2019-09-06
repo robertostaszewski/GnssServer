@@ -37,8 +37,8 @@ public class ChartActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
         chartDataDisplay.clear();
-        super.onStop();
+        super.onDestroy();
     }
 }

@@ -38,10 +38,14 @@ public class AnyChartDataDisplay implements ChartDataDisplay {
                 .minimum(rounded(chartData.getMinVisiblePoint().getX()))
                 .maximum(rounded(chartData.getMaxVisiblePoint().getX()));
 
-        scatter.yAxis(0).title("Longitude");
+        scatter.yAxis(0).title("Longitude")
+                .labels()
+                .format("{%Value}{decimalsCount:3}");
         scatter.xAxis(0).title("Latitude")
                 .drawFirstLabel(false)
-                .drawLastLabel(false);
+                .drawLastLabel(false)
+                .labels()
+                .format("{%Value}{decimalsCount:3}");
 
         Marker marker = scatter.marker(PointConverter.toDataEntry(chartData.getPoints()));
         marker.type(MarkerType.CIRCLE).size(2d);

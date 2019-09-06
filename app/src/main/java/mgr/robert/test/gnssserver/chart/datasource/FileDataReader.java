@@ -21,7 +21,7 @@ public class FileDataReader implements DataReader {
     public List<Point> read() {
         List<Point> points = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(dataPath))) {
-            bufferedReader.readLine();
+            bufferedReader.readLine(); //skip headers
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] strings = line.split(" +");
@@ -29,7 +29,7 @@ public class FileDataReader implements DataReader {
                 double x = Double.parseDouble(strings[3]);
                 points.add(new Point(x, y));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.e("FDR", "exception in read", e);
         }
         return points;
