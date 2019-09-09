@@ -32,44 +32,51 @@ public class AnyChartDataDisplay implements ChartDataDisplay {
         scatter.animation(true);
 
         scatter.yScale()
-                .minimum(rounded(chartData.getMinVisiblePoint().getY()))
-                .maximum(rounded(chartData.getMaxVisiblePoint().getY()));
+                .minimum(chartData.getMinVisiblePoint().getY())
+                .maximum(chartData.getMaxVisiblePoint().getY());
         scatter.xScale()
-                .minimum(rounded(chartData.getMinVisiblePoint().getX()))
-                .maximum(rounded(chartData.getMaxVisiblePoint().getX()));
+                .minimum(chartData.getMinVisiblePoint().getX())
+                .maximum(chartData.getMaxVisiblePoint().getX());
 
-        scatter.yAxis(0).title("Longitude")
+        scatter.yAxis(0).title("Latitude")
                 .labels()
-                .format("{%Value}{decimalsCount:3}");
-        scatter.xAxis(0).title("Latitude")
+                .format("{%Value}{decimalsCount:4}");
+        scatter.xAxis(0).title("Longitude")
                 .drawFirstLabel(false)
                 .drawLastLabel(false)
                 .labels()
-                .format("{%Value}{decimalsCount:3}");
+                .format("{%Value}{decimalsCount:4}");
 
-        Marker marker = scatter.marker(PointConverter.toDataEntry(chartData.getPoints()));
-        marker.type(MarkerType.CIRCLE).size(2d);
 
-        Line scatterSeriesLine = scatter.line(PointConverter.toDataEntry(chartData.getDrmsPoints()));
-        scatterSeriesLine.stroke("black", 1d, null, (String) null, (String) null);
+        scatter.legend().enabled(true);
 
-        Line scatterSeriesLine1 = scatter.line(PointConverter.toDataEntry(chartData.getDrms2Points()));
-        scatterSeriesLine1.stroke("red", 1d, null, (String) null, (String) null);
+        Marker points = scatter.marker(PointConverter.toDataEntry(chartData.getPoints()));
+        points.type(MarkerType.CIRCLE).size(2d);
+        points.name("measurments");
+
+        Line drmsLine = scatter.line(PointConverter.toDataEntry(chartData.getDrmsPoints()));
+        drmsLine.stroke("black", 1d, null, (String) null, (String) null);
+        drmsLine.name("drms");
+
+        Line drms2Line = scatter.line(PointConverter.toDataEntry(chartData.getDrms2Points()));
+        drms2Line.stroke("red", 1d, null, (String) null, (String) null);
+        drms2Line.name("2drms");
 
         AnyChartView anyChartView = activity.findViewById(R.id.any_chart_view);
+        anyChartView.setLicenceKey("s170533@student.pg.edu.pl-26e71b0b-ea45de04");
         anyChartView.setChart(scatter);
 
-        TextView textView = activity.findViewById(R.id.promien);
-        textView.setText(String.valueOf(chartData.getRadius()));
+        TextView drmsTextView = activity.findViewById(R.id.drms);
+        drmsTextView.setText(String.valueOf(chartData.getDrms()));
+        TextView drms2TextView = activity.findViewById(R.id.drms2);
+        drms2TextView.setText(String.valueOf(chartData.getDrms2()));
+        TextView avgTextView = activity.findViewById(R.id.avg);
+        avgTextView.setText(String.format("%f, %f", chartData.getAvgY(), chartData.getAvgX()));
     }
 
     @Override
     public void clear() {
         AnyChartView anyChartView = activity.findViewById(R.id.any_chart_view);
         anyChartView.clear();
-    }
-
-    private static BigDecimal rounded(double value) {
-        return new BigDecimal(value).setScale(10, BigDecimal.ROUND_HALF_EVEN);
     }
 }

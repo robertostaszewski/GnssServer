@@ -24,10 +24,14 @@ public class FileDataReader implements DataReader {
             bufferedReader.readLine(); //skip headers
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                String[] strings = line.split(" +");
-                double y = Double.parseDouble(strings[2]);
-                double x = Double.parseDouble(strings[3]);
-                points.add(new Point(x, y));
+                try {
+                    String[] strings = line.split(" +");
+                    double y = Double.parseDouble(strings[2]);
+                    double x = Double.parseDouble(strings[3]);
+                    points.add(new Point(x, y));
+                } catch (Exception e) {
+                Log.e("FDR", "exception in parsing double", e);
+            }
             }
         } catch (Exception e) {
             Log.e("FDR", "exception in read", e);

@@ -62,7 +62,7 @@ public class ChartDataCreator {
         double maxVisibleY = avgY + drms2 < maxY ? maxY : avgY + drms2;
 
         return new ChartData(points, drmsPoints, drms2Points,
-                new Point(minX, minY), new Point(maxX, maxY),
-                new Point(minVisibleX, minVisibleY), new Point(maxVisibleX, maxVisibleY), drms);
+                new Point(minX, minY), new Point(maxX, maxY), new Point(minVisibleX, minVisibleY),
+                new Point(maxVisibleX, maxVisibleY), drms, drms2, avgX, avgY);
     }
 }

@@ -10,7 +10,10 @@ public class ChartData {
     private final Point maxPoint;
     private final Point minVisiblePoint;
     private final Point maxVisiblePoint;
-    private final double radius;
+    private final double drms;
+    private final double drms2;
+    private final double avgX;
+    private final double avgY;
 
     public ChartData(List<Point> points,
                      List<Point> drmsPoints,
@@ -18,7 +21,11 @@ public class ChartData {
                      Point minPoint,
                      Point maxPoint,
                      Point minVisiblePoint,
-                     Point maxVisiblePoint, double radius) {
+                     Point maxVisiblePoint,
+                     double drms,
+                     double drms2,
+                     double avgX,
+                     double avgY) {
         this.drmsPoints = drmsPoints;
         this.drms2Points = drms2Points;
         this.points = points;
@@ -26,7 +33,10 @@ public class ChartData {
         this.maxPoint = maxPoint;
         this.minVisiblePoint = minVisiblePoint;
         this.maxVisiblePoint = maxVisiblePoint;
-        this.radius = radius;
+        this.drms = drms;
+        this.drms2 = drms2;
+        this.avgX = avgX;
+        this.avgY = avgY;
     }
 
     public List<Point> getDrmsPoints() {
@@ -57,7 +67,19 @@ public class ChartData {
         return maxVisiblePoint;
     }
 
-    public double getRadius() {
-        return radius;
+    public double getDrms() {
+        return drms;
+    }
+
+    public double getDrms2() {
+        return drms2;
+    }
+
+    public double getAvgX() {
+        return avgX;
+    }
+
+    public double getAvgY() {
+        return avgY;
     }
 }
